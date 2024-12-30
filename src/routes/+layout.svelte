@@ -1,16 +1,35 @@
-<script lang="ts">
-	import '../app.css';
-	import { Badge } from 'flowbite-svelte';
-	let { children } = $props();
-</script>
+<script>
+    import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
+    let items = [
+        { id: 1, maker: 'Toyota', type: 'ABC', make: 2017 },
+        { id: 2, maker: 'Ford', type: 'CDE', make: 2018 },
+        { id: 3, maker: 'Volvo', type: 'FGH', make: 2019 },
+        { id: 4, maker: 'Saab', type: 'IJK', make: 2020 }
+    ];
+    let table
 
-<main class="mx-auto mb-16 min-w-96 p-8">
-	<div class="flex justify-center gap-2 bg-white p-2 dark:bg-gray-900">
-		<Badge large color="blue" href="/">Home</Badge>
-		<Badge large color="yellow">Flowbite Svelte: v{__FLOWBITE_SVELTE_VERSION__}</Badge>
-		<Badge large color="dark">Svelte: v{__SVELTE_VERSION__}</Badge>
-		<Badge large color="green">SvelteKit: v{__SVELTEKIT_VERSION__}</Badge>
-		<Badge large color="indigo">Vite: v{__VITE_VERSION__}</Badge>
-	</div>
-	{@render children()}
-</main>
+
+</script>
+<button onclick={()=>{items.push({ id: 4, maker: 'Saab', type: 'IJK', make: 2020 })}}>sdf</button>
+<Table hoverable={true} {items} bind:this={table}>
+    <TableHead>
+        <TableHeadCell sort={(a, b) => a.id - b.id}>ID</TableHeadCell>
+        <TableHeadCell sort={(a, b) => a.maker.localeCompare(b.maker)} defaultSort>Maker</TableHeadCell>
+        <TableHeadCell sort={(a, b) => a.type.localeCompare(b.type)}>Type</TableHeadCell>
+        <TableHeadCell sort={(a, b) => a.make - b.make} defaultDirection="desc">Make</TableHeadCell>
+        <TableHeadCell>
+            <span class="sr-only">Buy</span>
+        </TableHeadCell>
+    </TableHead>
+    <TableBody tableBodyClass="divide-y">
+        <TableBodyRow slot="row" let:item>
+            <TableBodyCell>{item.id}</TableBodyCell>
+            <TableBodyCell>{item.maker}</TableBodyCell>
+            <TableBodyCell>{item.type}</TableBodyCell>
+            <TableBodyCell>{item.make}</TableBodyCell>
+            <TableBodyCell>
+                <a href="/tables" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Buy</a>
+            </TableBodyCell>
+        </TableBodyRow>
+    </TableBody>
+</Table>
