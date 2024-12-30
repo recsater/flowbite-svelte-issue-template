@@ -1,15 +1,35 @@
 <script>
-	import { Heading, List, Li } from 'flowbite-svelte';
-</script>
+    import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
+    let items = [
+        { id: 1, maker: 'Toyota', type: 'ABC', make: 2017 },
+        { id: 2, maker: 'Ford', type: 'CDE', make: 2018 },
+        { id: 3, maker: 'Volvo', type: 'FGH', make: 2019 },
+        { id: 4, maker: 'Saab', type: 'IJK', make: 2020 }
+    ];
+    let table
 
-<div class="p-9">
-	<Heading tag="h1">Flowbite-Svelte Playground</Heading>
-	<List tag="ol">
-		<Li class="text-2xl">Fork this Stackblitz project</Li>
-		<Li class="text-2xl">Update Flowbite-Svelte by running `pnpm i -D flowbite-svelte@latest`</Li>
-		<Li class="text-2xl">Run `pnpm update` to update dependencies.</Li>
-		<Li class="text-2xl">Add your code.</Li>
-		<Li class="text-2xl">Run `pnpm check`.</Li>
-    <Li class="text-2xl">It's a good practice to run `pnpm format && pnpm lint`</Li>
-	</List>
-</div>
+
+</script>
+<button onclick={()=>{items.push({ id: 4, maker: 'Saab', type: 'IJK', make: 2020 })}}>sdf</button>
+<Table hoverable={true} {items} bind:this={table}>
+    <TableHead>
+        <TableHeadCell sort={(a, b) => a.id - b.id}>ID</TableHeadCell>
+        <TableHeadCell sort={(a, b) => a.maker.localeCompare(b.maker)} defaultSort>Maker</TableHeadCell>
+        <TableHeadCell sort={(a, b) => a.type.localeCompare(b.type)}>Type</TableHeadCell>
+        <TableHeadCell sort={(a, b) => a.make - b.make} defaultDirection="desc">Make</TableHeadCell>
+        <TableHeadCell>
+            <span class="sr-only">Buy</span>
+        </TableHeadCell>
+    </TableHead>
+    <TableBody tableBodyClass="divide-y">
+        <TableBodyRow slot="row" let:item>
+            <TableBodyCell>{item.id}</TableBodyCell>
+            <TableBodyCell>{item.maker}</TableBodyCell>
+            <TableBodyCell>{item.type}</TableBodyCell>
+            <TableBodyCell>{item.make}</TableBodyCell>
+            <TableBodyCell>
+                <a href="/tables" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Buy</a>
+            </TableBodyCell>
+        </TableBodyRow>
+    </TableBody>
+</Table>
